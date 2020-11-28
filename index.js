@@ -35,17 +35,37 @@ app
 })
 .post("/assignMentor", (req,res) => {
     let mentor =  req.body.MentorName
-    MentorDetails.forEach((allMentors)=>{
-        if(allMentors.MentorName === mentor){
-            AllData.filter((student)=>{
+    let Input = MentorDetails.filter((data)=> data.MentorName === mentor)
+    if(Input.length>0){
+        AllData.filter((student)=>{
             if(student.MentorName === "NA"){
                 student.MentorName = mentor
                 res.sendFile(__dirname + "/public/success.html") 
             }
         })
-        }
-    })
-    res.sendFile(__dirname + "/public/failure.html") 
+    }
+    if(Input.length===0){
+        res.sendFile(__dirname + "/public/failure.html") 
+    }
+            
+    
+})
+.post("/assignSingleMentor", (req, res)=>{
+    let student = req.body.StudentName;
+    let mentor = req.body.MentorName;
+    let Input = MentorDetails.filter((data)=> data.MentorName === mentor)
+    if(Input.length>0){
+        AllData.forEach((data) => {
+                if(data.Name === student){
+                    data.MentorName = mentor;
+                    res.sendFile(__dirname + "/public/success.html")
+                }
+            })
+        
+    }
+    if(Input.length===0){
+        res.sendFile(__dirname + "/public/failure.html") 
+    }
 })
 .post("/createStudent", (req, res)=>{  
 let Input = AllData.filter((data)=> data.Name === req.body.Name)
@@ -69,21 +89,7 @@ let Input = MentorDetails.filter((data)=> data.MentorName === req.body.MentorNam
         res.sendFile(__dirname + "/public/failure.html")   
     }
 })
-.post("/assignSingleMentor", (req, res)=>{
-    let student = req.body.StudentName;
-    let mentor = req.body.MentorName;
-    MentorDetails.forEach((data)=>{
-        if(data.MentorName === mentor){
-                AllData.forEach((data) => {
-                if(data.Name === student){
-                    data.MentorName = mentor;
-                }
-            })
-        res.sendFile(__dirname + "/public/success.html")  
-        }
-    })
-    res.sendFile(__dirname + "/public/failure.html")
-})
+
 
 .listen(process.env.PORT)
 
