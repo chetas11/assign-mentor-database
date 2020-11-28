@@ -33,7 +33,7 @@ app
 .get("/mentors", (req, res)=>{                      //Fetches all the Data
     res.render("mentors", {data: MentorDetails} ) 
 })
-.post("/assign-mentor", (req,res) => {
+.post("/assignMentor", (req,res) => {
     let mentor =  req.body.MentorName
     MentorDetails.forEach((allMentors)=>{
         if(allMentors.MentorName === mentor){
@@ -69,7 +69,7 @@ let Input = MentorDetails.filter((data)=> data.MentorName === req.body.MentorNam
         res.sendFile(__dirname + "/public/failure.html")   
     }
 })
-.post("/AssignSingleMentor", (req, res)=>{
+.post("/assignSingleMentor", (req, res)=>{
     let student = req.body.StudentName;
     let mentor = req.body.MentorName;
     MentorDetails.forEach((data)=>{
