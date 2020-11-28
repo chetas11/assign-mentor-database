@@ -1,0 +1,26 @@
+input {
+  margin: 0%;
+  padding: 0%;
+  width: 100%;
+}
+
+.display {
+  display: none;
+}
+
+.toggler {
+  cursor: pointer;
+  margin-top: 20px;
+  color: #34626c;
+}
+h1 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: bolder;
+}
+
+body {
+  font-family: "Merriweather", serif;
+  background-color: #393e46;
+  background-image: url("https://www.transparenttextures.com/patterns/black-orchid.png");
+  color: #f8f1f1;
+}
