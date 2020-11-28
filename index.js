@@ -41,9 +41,9 @@ app
             if(student.MentorName === "NA"){
                 student.MentorName = mentor
             }
-        res.sendFile(__dirname + "/public/success.html") 
         })
-        } 
+        res.sendFile(__dirname + "/public/success.html") 
+        }
     })
     res.sendFile(__dirname + "/public/failure.html") 
 })
