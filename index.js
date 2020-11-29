@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const app = express();
 const AllData = require("./AllData")
 const MentorDetails = require("./MentorDetails");
-const e = require("express");
 
 app.set('view engine', 'ejs');
 app
@@ -12,15 +11,15 @@ app
 .get("/", (req, res)=>{                     
     res.sendFile(__dirname +"/index.html")
 })
-.get("/check", (req, res)=>{                      //Fetches all the Data
+.get("/check", (req, res)=>{                              //Fetches All Students data
     res.status(200).json({
         data:AllData
     })
 })
-.get("/data", (req, res)=>{    
+.get("/data", (req, res)=>{                              //Fetches All Mentor
     res.render("trail", {data: AllData} ) 
 })
-.post("/SpecificMentor",(req,res)=>{                      //Fetches all the Available Hall to book
+.post("/SpecificMentor",(req,res)=>{                     //Fetches Students under one Mentor
     let mentor = req.body.MentorName;
     let Filtered = AllData.filter((data)=> data.MentorName === mentor)
     if(Filtered.length>0){
@@ -30,10 +29,7 @@ app
     }
     
 })
-.get("/mentors", (req, res)=>{                      //Fetches all the Data
-    res.render("mentors", {data: MentorDetails} ) 
-})
-.post("/assignMentor", (req,res) => {
+.post("/assignMentor", (req,res) => {                     //Assign mentor to all unassigned students
     let mentor =  req.body.MentorName
     let Input = MentorDetails.filter((data)=> data.MentorName === mentor)
     if(Input.length>0){
@@ -46,11 +42,9 @@ app
     }
     if(Input.length===0){
         res.sendFile(__dirname + "/public/failure.html") 
-    }
-            
-    
+    }    
 })
-.post("/assignSingleMentor", (req, res)=>{
+.post("/assignSingleMentor", (req, res)=>{                  //Update/Assign Mentor to Students 
     let student = req.body.StudentName;
     let mentor = req.body.MentorName;
     let Input = MentorDetails.filter((data)=> data.MentorName === mentor)
@@ -67,7 +61,7 @@ app
         res.sendFile(__dirname + "/public/failure.html") 
     }
 })
-.post("/createStudent", (req, res)=>{  
+.post("/createStudent", (req, res)=>{                        //Create a new Student 
 let Input = AllData.filter((data)=> data.Name === req.body.Name)
     if(Input.length===0){
         req.body.MentorName = "NA"
@@ -79,7 +73,7 @@ let Input = AllData.filter((data)=> data.Name === req.body.Name)
     }
 
 })
-.post("/createMentor", (req, res)=>{
+.post("/createMentor", (req, res)=>{                        //Create a new Mentor 
 let Input = MentorDetails.filter((data)=> data.MentorName === req.body.MentorName)
     if(Input.length===0){
         MentorDetails.push(req.body)
@@ -89,8 +83,6 @@ let Input = MentorDetails.filter((data)=> data.MentorName === req.body.MentorNam
         res.sendFile(__dirname + "/public/failure.html")   
     }
 })
-
-
 .listen(process.env.PORT)
 
 
