@@ -15,7 +15,7 @@ app
     res.sendFile(__dirname +"/index.html")
 })
 .get("/data", (req, res)=>{                                                 //Fetches all the Students data
-    MongoClient.connect(url, function(err, db) {
+    MongoClient.connect(url || process.env.MONGODB_URI, function(err, db) {
     if (err) throw err;
     var dbo = db.db("new");
     dbo.collection("students").find().toArray(function(err, result) {
@@ -94,7 +94,7 @@ app
 })
 })
 .post("/createStudent", (req, res)=>{                                   //Create a new Student 
-    MongoClient.connect(url, function(err, db) {
+    MongoClient.connect(url || process.env.MONGODB_URI, function(err, db) {
         if (err) throw err;
         var dbo = db.db("new");
         var query = { Name: req.body.Name };
