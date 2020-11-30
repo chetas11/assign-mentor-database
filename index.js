@@ -17,7 +17,7 @@ app
 .get("/data", (req, res)=>{                                                 //Fetches all the Students data
     MongoClient.connect(url || process.env.MONGODB_URI, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("new");
+    let dbo = db.db("new");
     dbo.collection("students").find().toArray(function(err, result) {
         if (err) throw err;
         if(result.length>0){ res.render("students", {data: result} )  }
@@ -28,9 +28,9 @@ app
     
 })
 .get("/mentors", (req, res)=>{                                              //Fetches all the Mentors
-    MongoClient.connect(url, function(err, db) {
+    MongoClient.connect(url || process.env.MONGODB_URI, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("new");
+    let dbo = db.db("new");
     dbo.collection("mentors").find().toArray(function(err, result) {
         if (err) throw err;
         if(result.length>0){res.render("mentors", {data: result} ) }
@@ -40,10 +40,10 @@ app
     });                              
 })
 .post("/SpecificMentor",(req,res)=>{                                       //Fetches Students under one Mentor
-    MongoClient.connect(url, function(err, db) {
+    MongoClient.connect(url || process.env.MONGODB_URI, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("new");
-    var query = { MentorName: req.body.MentorName };
+    let dbo = db.db("new");
+    let query = { MentorName: req.body.MentorName };
     dbo.collection("students").find(query).toArray(function(err, result) {
         if (err) throw err;
         if(result.length>0){res.render("specific", {data: result} ) }
@@ -53,12 +53,12 @@ app
     });    
 })
 .post("/assignMentor", (req,res) => {                                   //Assign mentor to all unassigned students
-    MongoClient.connect(url, function(err, db) {
+    MongoClient.connect(url || process.env.MONGODB_URI, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("new");
-    var query = { MentorName: "NA" };
-    var query1 = { MentorName: req.body.MentorName };
-    var newvalues = {$set: {MentorName: req.body.MentorName} };
+    let dbo = db.db("new");
+    let query = { MentorName: "NA" };
+    let query1 = { MentorName: req.body.MentorName };
+    let newvalues = {$set: {MentorName: req.body.MentorName} };
     dbo.collection("mentors").find(query1).toArray(function(err, result) {
         if (err) throw err;
         if(result.length>0){ 
@@ -74,11 +74,11 @@ app
 })
 })
 .post("/assignSingleMentor", (req, res)=>{                              // Update/Assign Mentor to Students 
-    MongoClient.connect(url, function(err, db) {
+    MongoClient.connect(url || process.env.MONGODB_URI, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("new");
-    var query = { Name: req.body.StudentName };
-    var newvalues = {$set: {MentorName: req.body.MentorName} };
+    let dbo = db.db("new");
+    let query = { Name: req.body.StudentName };
+    let newvalues = {$set: {MentorName: req.body.MentorName} };
     dbo.collection("students").find(query).toArray(function(err, result) {
         if (err) throw err;
         if(result.length>0){
@@ -94,10 +94,10 @@ app
 })
 })
 .post("/createStudent", (req, res)=>{                                   //Create a new Student 
-    MongoClient.connect(url || process.env.MONGODB_URI, function(err, db) {
+    MongoClient.connect(url || process.env.MONGODB_URI || process.env.MONGODB_URI, function(err, db) {
         if (err) throw err;
-        var dbo = db.db("new");
-        var query = { Name: req.body.Name };
+        let dbo = db.db("new");
+        let query = { Name: req.body.Name };
         dbo.collection("students").find(query).toArray(function(err, result) {
         if (err) throw err;
         if(result.length === 0){
@@ -116,10 +116,10 @@ app
 
 })
 .post("/createMentor", (req, res)=>{                                    //Create a new Mentor
-    MongoClient.connect(url, function(err, db) {
+    MongoClient.connect(url || process.env.MONGODB_URI, function(err, db) {
         if (err) throw err;
-        var dbo = db.db("new");
-        var query = { MentorName: req.body.MentorName };
+        let dbo = db.db("new");
+        let query = { MentorName: req.body.MentorName };
         dbo.collection("mentors").find(query).toArray(function(err, result) {
         if (err) throw err;
         if(result.length === 0){ 
